@@ -1,14 +1,13 @@
-port module Session
-    exposing
-        ( Session
-        , changes
-        , cred
-        , decode
-        , login
-        , logout
-        , navKey
-        , viewer
-        )
+port module Session exposing
+    ( Session
+    , changes
+    , cred
+    , decode
+    , login
+    , logout
+    , navKey
+    , viewer
+    )
 
 import Browser.Navigation as Nav
 import Json.Decode as Decode exposing (Decoder)
@@ -79,6 +78,9 @@ login newViewer =
 -- LOGOUT
 
 
+port storeSession : Maybe String -> Cmd msg
+
+
 logout : Cmd msg
 logout =
     sendSessionToJavaScript Nothing
@@ -98,7 +100,8 @@ authentication token to JavaScript.
 -}
 sendSessionToJavaScript : Maybe String -> Cmd msg
 sendSessionToJavaScript maybeAuthenticationToken =
-    Cmd.none
+    --Cmd.none
+    storeSession maybeAuthenticationToken
 
 
 
@@ -124,7 +127,10 @@ authentication token from JavaScript.
 -}
 receiveSessionFromJavaScript : (Value -> msg) -> Sub msg
 receiveSessionFromJavaScript toMsg =
-    Sub.none
+    onSessionChange toMsg
+
+
+port onSessionChange : (Value -> msg) -> Sub msg
 
 
 decode : Nav.Key -> Value -> Session

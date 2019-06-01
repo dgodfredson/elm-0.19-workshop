@@ -138,7 +138,7 @@ type Msg
     | EnteredEmail String
     | EnteredUsername String
     | EnteredPassword String
-    | CompletedRegister (Result Http.Error Viewer)
+    |   (Result Http.Error Viewer)
     | GotSession Session
 
 
@@ -166,10 +166,14 @@ update msg model =
                    let-expression. What are their types? What are the types the
                    `Http.post` function is looking for?
                 -}
+                postLogin =
+                    Http.post "/api/users" requestBody responseDecoder
+
                 request : Http.Request Viewer
                 request =
-                    Debug.todo "Call Http.post to represent a POST to /api/users"
+                    --Debug.todo "Call Http.post to represent a POST to /api/users"
 
+                Http.send 
                 {- 👉 TODO: Use Http.send to turn the request we just defined
                    into a Cmd for `update` to execute.
 
